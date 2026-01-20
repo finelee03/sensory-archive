@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>감각 번역 | Sensory Archive</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #FAFAFA;
+            color: #1A1A1A;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 48px;
+            background: #FFFFFF;
+            border-bottom: 1px solid #E5E5E5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #FF6B35;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-tab:hover {
+            background: #F5F5F5;
+        }
+
+        .nav-tab.active {
+            background: #1A1A1A;
+            color: #FFFFFF;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 48px;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .page-header .subtitle {
+            font-size: 18px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .page-header .subtitle span {
+            color: #FF6B35;
+            font-weight: 500;
+        }
+
+        /* Section Title */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .section-title h2 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .section-title .line {
+            flex: 1;
+            height: 1px;
+            background: #E5E5E5;
+        }
+
+        /* Translation Cards */
+        .translation-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+
+        .translation-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 48px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 48px;
+            align-items: center;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid #F0F0F0;
+        }
+
+        /* Taste Section (Left) */
+        .taste-section {
+            text-align: center;
+        }
+
+        .taste-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #FF6B35;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+        }
+
+        .taste-visual {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .taste-visual.carbonated {
+            background: linear-gradient(135deg, #FFE5D9 0%, #FFF0E5 100%);
+        }
+
+        .taste-visual.coconut {
+            background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%);
+        }
+
+        /* Carbonated bubbles animation */
+        .bubble {
+            position: absolute;
+            background: rgba(255, 107, 53, 0.3);
+            border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); opacity: 0.3; }
+            50% { transform: translateY(-20px); opacity: 0.7; }
+        }
+
+        /* Coconut chunks */
+        .chunk {
+            position: absolute;
+            background: rgba(76, 175, 80, 0.4);
+            border-radius: 3px;
+        }
+
+        .taste-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .taste-description {
+            font-size: 14px;
+            color: #666;
+            max-width: 240px;
+            margin: 0 auto;
+        }
+
+        /* Arrow Section (Middle) */
+        .arrow-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .arrow {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #1A1A1A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow svg {
+            width: 32px;
+            height: 32px;
+            fill: #FFFFFF;
+        }
+
+        .arrow-label {
+            font-size: 12px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        /* Touch Section (Right) */
+        .touch-section {
+            text-align: center;
+        }
+
+        .touch-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1A1A1A;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+        }
+
+        .touch-visual {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 24px;
+            border-radius: 16px;
+            background: #F5F5F5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Dot pattern for carbonated */
+        .dot-pattern {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            padding: 20px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: #1A1A1A;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+
+        .dot:nth-child(odd) {
+            transform: scale(0.7);
+        }
+
+        .dot:hover {
+            transform: scale(1.2);
+            background: #FF6B35;
+        }
+
+        /* Cube pattern for coconut */
+        .cube-pattern {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .cube {
+            width: 24px;
+            height: 24px;
+            background: #1A1A1A;
+            border-radius: 4px;
+            transition: transform 0.2s ease;
+        }
+
+        .cube:nth-child(3n) {
+            transform: rotate(15deg);
+        }
+
+        .cube:nth-child(3n+1) {
+            transform: rotate(-10deg);
+        }
+
+        .cube:hover {
+            transform: scale(1.1) rotate(0deg);
+            background: #4CAF50;
+        }
+
+        .touch-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .touch-description {
+            font-size: 14px;
+            color: #666;
+            max-width: 240px;
+            margin: 0 auto;
+        }
+
+        /* Can Preview Section */
+        .can-preview {
+            margin-top: 80px;
+        }
+
+        .can-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 48px;
+        }
+
+        .can-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 48px;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid #F0F0F0;
+        }
+
+        .can-mockup {
+            width: 120px;
+            height: 180px;
+            margin: 0 auto 32px;
+            background: linear-gradient(135deg, #E0E0E0 0%, #F5F5F5 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .can-mockup.carbonated-can {
+            background: linear-gradient(135deg, #FF8A65 0%, #FFAB91 100%);
+        }
+
+        .can-mockup.coconut-can {
+            background: linear-gradient(135deg, #81C784 0%, #A5D6A7 100%);
+        }
+
+        .surface-texture {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 16px;
+        }
+
+        .surface-dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+        }
+
+        .surface-cube {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 2px;
+        }
+
+        .can-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .can-card p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            background: #F5F5F5;
+            border-radius: 16px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 48px;
+            color: #999;
+            font-size: 14px;
+            border-top: 1px solid #E5E5E5;
+            margin-top: 80px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .translation-card {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .arrow-section {
+                flex-direction: row;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+
+            .can-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                padding: 16px 24px;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            main {
+                padding: 48px 24px;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Sensory <span>Archive</span></div>
+        <div class="nav-tabs">
+            <button class="nav-tab">청각</button>
+            <button class="nav-tab">촉각</button>
+            <button class="nav-tab active">미각</button>
+            <button class="nav-tab">후각</button>
+            <button class="nav-tab">시각</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Sensory Translation</h1>
+            <p class="subtitle"><span>미각</span>을 <span>촉각</span>으로 번역하다</p>
+        </div>
+
+        <!-- Section Title -->
+        <div class="section-title">
+            <h2>감각 번역 사례</h2>
+            <div class="line"></div>
+        </div>
+
+        <!-- Translation Cards -->
+        <div class="translation-grid">
+            <!-- Card 1: Carbonated -->
+            <div class="translation-card">
+                <div class="taste-section">
+                    <div class="taste-label">Taste</div>
+                    <div class="taste-visual carbonated">
+                        <div class="bubble" style="width: 20px; height: 20px; top: 30%; left: 20%;"></div>
+                        <div class="bubble" style="width: 15px; height: 15px; top: 50%; left: 60%; animation-delay: 0.5s;"></div>
+                        <div class="bubble" style="width: 25px; height: 25px; top: 60%; left: 35%; animation-delay: 1s;"></div>
+                        <div class="bubble" style="width: 12px; height: 12px; top: 40%; left: 75%; animation-delay: 1.5s;"></div>
+                        <div class="bubble" style="width: 18px; height: 18px; top: 70%; left: 50%; animation-delay: 0.8s;"></div>
+                        <div class="bubble" style="width: 10px; height: 10px; top: 25%; left: 45%; animation-delay: 1.2s;"></div>
+                    </div>
+                    <div class="taste-name">탄산음료</div>
+                    <div class="taste-description">혀 위에서 톡톡 터지는 기포의 자극, 청량하고 짜릿한 감각</div>
+                </div>
+
+                <div class="arrow-section">
+                    <div class="arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </div>
+                    <div class="arrow-label">translate</div>
+                </div>
+
+                <div class="touch-section">
+                    <div class="touch-label">Touch</div>
+                    <div class="touch-visual">
+                        <div class="dot-pattern">
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        </div>
+                    </div>
+                    <div class="touch-name">돌기 패턴</div>
+                    <div class="touch-description">손끝에 닿는 작고 둥근 돌기들, 불규칙한 크기와 배열</div>
+                </div>
+            </div>
+
+            <!-- Card 2: Coconut Palm -->
+            <div class="translation-card">
+                <div class="taste-section">
+                    <div class="taste-label">Taste</div>
+                    <div class="taste-visual coconut">
+                        <div class="chunk" style="width: 20px; height: 18px; top: 35%; left: 25%; transform: rotate(15deg);"></div>
+                        <div class="chunk" style="width: 18px; height: 16px; top: 55%; left: 55%; transform: rotate(-10deg);"></div>
+                        <div class="chunk" style="width: 22px; height: 20px; top: 45%; left: 40%; transform: rotate(5deg);"></div>
+                        <div class="chunk" style="width: 16px; height: 14px; top: 30%; left: 60%; transform: rotate(-20deg);"></div>
+                        <div class="chunk" style="width: 24px; height: 22px; top: 60%; left: 30%; transform: rotate(25deg);"></div>
+                    </div>
+                    <div class="taste-name">코코팜</div>
+                    <div class="taste-description">씹히는 과육의 식감, 부드러우면서도 탄력 있는 알갱이</div>
+                </div>
+
+                <div class="arrow-section">
+                    <div class="arrow">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </div>
+                    <div class="arrow-label">translate</div>
+                </div>
+
+                <div class="touch-section">
+                    <div class="touch-label">Touch</div>
+                    <div class="touch-visual">
+                        <div class="cube-pattern">
+                            <div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div>
+                            <div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div>
+                            <div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div>
+                            <div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div>
+                            <div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div><div class="cube"></div>
+                        </div>
+                    </div>
+                    <div class="touch-name">알갱이 패턴</div>
+                    <div class="touch-description">손끝에 닿는 육면체 알갱이, 불규칙한 각도와 크기</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Can Preview Section -->
+        <div class="can-preview">
+            <div class="section-title">
+                <h2>적용 예시: 캔 표면 디자인</h2>
+                <div class="line"></div>
+            </div>
+
+            <div class="can-grid">
+                <div class="can-card">
+                    <div class="can-mockup carbonated-can">
+                        <div class="surface-texture">
+                            <span class="surface-dot"></span><span class="surface-dot"></span><span class="surface-dot"></span>
+                            <span class="surface-dot"></span><span class="surface-dot"></span><span class="surface-dot"></span>
+                            <span class="surface-dot"></span><span class="surface-dot"></span><span class="surface-dot"></span>
+                            <span class="surface-dot"></span><span class="surface-dot"></span><span class="surface-dot"></span>
+                            <span class="surface-dot"></span><span class="surface-dot"></span><span class="surface-dot"></span>
+                            <span class="surface-dot"></span><span class="surface-dot"></span><span class="surface-dot"></span>
+                            <span class="surface-dot"></span><span class="surface-dot"></span><span class="surface-dot"></span>
+                        </div>
+                    </div>
+                    <h3>탄산음료 캔</h3>
+                    <p>톡톡 튀어나온 둥근 돌기 패턴으로<br>탄산의 청량감을 촉각으로 전달</p>
+                    <div class="tags">
+                        <span class="tag">#청량감</span>
+                        <span class="tag">#톡톡</span>
+                        <span class="tag">#기포</span>
+                    </div>
+                </div>
+
+                <div class="can-card">
+                    <div class="can-mockup coconut-can">
+                        <div class="surface-texture">
+                            <span class="surface-cube"></span><span class="surface-cube"></span><span class="surface-cube"></span>
+                            <span class="surface-cube"></span><span class="surface-cube"></span><span class="surface-cube"></span>
+                            <span class="surface-cube"></span><span class="surface-cube"></span><span class="surface-cube"></span>
+                            <span class="surface-cube"></span><span class="surface-cube"></span><span class="surface-cube"></span>
+                            <span class="surface-cube"></span><span class="surface-cube"></span><span class="surface-cube"></span>
+                        </div>
+                    </div>
+                    <h3>코코팜 캔</h3>
+                    <p>육면체 알갱이 패턴으로<br>과육의 씹히는 식감을 촉각으로 전달</p>
+                    <div class="tags">
+                        <span class="tag">#과육</span>
+                        <span class="tag">#알갱이</span>
+                        <span class="tag">#식감</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Sensory Archive &copy; 2025 — 감각의 조화와 모순을 통한 디자인</p>
+    </footer>
+</body>
+</html>
